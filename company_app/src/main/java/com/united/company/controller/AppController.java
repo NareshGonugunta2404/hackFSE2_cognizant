@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.united.company.client.CompanyRestClient;
 import com.united.company.entity.Company;
 import com.united.company.exception.CompanyCodeAlreadyExistException;
 import com.united.company.exception.CompanyNotFoundException;
@@ -28,8 +29,8 @@ public class AppController implements ApiContract{
 	@Autowired
 	private CompanyAppService appService;
 	
-//	@Autowired
-//	RestClient client;
+	@Autowired
+	private CompanyRestClient client;
 	
 	@Value("${restclient.stockprice.url}")
 	String stockPriceUrl;
@@ -58,6 +59,7 @@ public class AppController implements ApiContract{
 	@Override
 	public ResponseEntity<?> getCompanyDetails(Long companyCode) {
 		Company company = appService.getCompanyDetailByCompanyCode(companyCode);
+	
 		return new ResponseEntity<>(company, HttpStatus.OK);
 	}
 
@@ -74,29 +76,10 @@ public class AppController implements ApiContract{
 			throw new CompanyNotFoundException();
 		}
 		URI determinedBasePathUri = URI.create(stockPriceUrl);
-//		client.deleteStockData(determinedBasePathUri,companyCode);
+		client.deleteStockData(determinedBasePathUri,companyCode);
 		appService.deleteCompany(companyCode);
 		log.info("Company deleted with company code \""+companyCode+"\".");
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-
-	@Override
-	public ResponseEntity<?> addStockStockPriceDetails(String companyCode, CompanyRegistry companyStockDetails) {
-		
-		Company addStockPriceDetails = appService.addStockPriceDetails(companyCode, companyStockDetails);
-		return null;
-	}
-
-	@Override
-	public ResponseEntity<?> getStockPriceList(String companyCode, String startdate, String endDate) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ResponseEntity<?> updatCompanyDetails(String companyCode) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

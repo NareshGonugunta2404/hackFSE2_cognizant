@@ -40,15 +40,15 @@ public class AppService {
 	}
 
 	public double getAvgPrice(List<StockData> stockDataList) {
-		double avg = stockDataList.stream().mapToDouble(e -> e.getStockPrice()).average().orElse(0);
+		double avg = stockDataList.stream().mapToDouble(stockData -> stockData.getStockPrice()).average().orElse(0);
 		return Math.round(avg*100)/100;
 	}
 
 	public double getMaxPrice(List<StockData> stockDataList) {
-		return stockDataList.stream().mapToDouble(e -> e.getStockPrice()).max().orElse(0);
+		return stockDataList.stream().mapToDouble(stockData -> stockData.getStockPrice()).max().orElse(0);
 	}
 	
 	public double getMinPrice(List<StockData> stockDataList) {
-		return stockDataList.stream().mapToDouble(e -> e.getStockPrice()).min().orElse(0);
+		return stockDataList.stream().mapToDouble(stockData -> stockData.getStockPrice()).min().orElse(0);
 	}
 }

@@ -64,40 +64,4 @@ public interface ApiContract {
 	@DeleteMapping(path = "/delete/{companycode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> deleteCompanyDetails(@PathVariable Long companyCode);
 	
-	
-	
-	// STOCK APP
-	@ApiOperation(value ="Add new stock price", hidden = false)
-	@ApiResponses(value = { @ApiResponse(code = 200, message="OK"),
-			@ApiResponse(code = 400, message="Bad request"),
-			@ApiResponse(code = 401, message="Not authorized to view the resource"),
-			@ApiResponse(code = 403, message="Resource trying to access is forbidden"),
-			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
-			@ApiResponse(code = 415, message="The content is unsupported"),
-			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@PostMapping(path = "stock/add/{companycode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addStockStockPriceDetails(@PathVariable String companyCode, @RequestBody CompanyRegistry companyStockDetails);
-	
-	@ApiOperation(value ="Fetches stock price list", hidden = false)
-	@ApiResponses(value = { @ApiResponse(code = 200, message="OK"),
-			@ApiResponse(code = 400, message="Bad request"),
-			@ApiResponse(code = 401, message="Not authorized to view the resource"),
-			@ApiResponse(code = 403, message="Resource trying to access is forbidden"),
-			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
-			@ApiResponse(code = 415, message="The content is unsupported"),
-			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@PostMapping(path = "stock/get/{companycode}/{startdate}/{enddate}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getStockPriceList(@PathVariable String companyCode, @PathVariable String startdate, @PathVariable String endDate);
-
-	@ApiOperation(value ="update a stock price Company", hidden = false)
-	@ApiResponses(value = { @ApiResponse(code = 200, message="OK"),
-			@ApiResponse(code = 400, message="Bad request"),
-			@ApiResponse(code = 401, message="Not authorized to view the resource"),
-			@ApiResponse(code = 403, message="Resource trying to access is forbidden"),
-			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
-			@ApiResponse(code = 415, message="The content is unsupported"),
-			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@DeleteMapping(path = "company/update/{companycode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	ResponseEntity<?> updatCompanyDetails(String companyCode);
-	
 }
