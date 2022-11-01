@@ -1,6 +1,7 @@
 package com.united.company.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -14,9 +15,10 @@ import lombok.NoArgsConstructor;
 public class Company {
 	
 	@Id
-	private Long id;
+	private String id;
 	
-	private Long companyCode;
+	@Indexed(unique = true)
+	private String companyCode;
 	
 	private String companyName;
 	

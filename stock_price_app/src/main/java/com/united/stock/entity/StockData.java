@@ -2,35 +2,35 @@ package com.united.stock.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(value = "stockdata")
 public class StockData {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
+	@Indexed(unique = true)
 	private String companyCode;
 	
 	private double stockPrice;
 	
-	private LocalDateTime currentDateAndTime=LocalDateTime.now();
+	private LocalDateTime currentDateTime;
+	//=LocalDateTime.now();
 	
 	@Override
 	public String toString() {
 		return "StockData [id=" + id + ", companyCode=" + companyCode + ", stockPrice=" + stockPrice
-				+ ", currentDateAndTime=" + currentDateAndTime + "]";
+				+ ", currentDateAndTime=" + currentDateTime + "]";
 	}
 	
 }

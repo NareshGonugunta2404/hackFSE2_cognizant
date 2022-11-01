@@ -8,8 +8,8 @@ import com.united.company.entity.Company;
 @Repository
 public interface AppRepository extends MongoRepository<Company, String>{
 
-	Company findByCompanyCode(Long companyCode);
+	Company findByCompanyCode(String companyCode);
 	
-	Long deleteByCompanyCode(Long companyCode);
+	Long deleteByCompanyCode(String companyCode);
 
 }

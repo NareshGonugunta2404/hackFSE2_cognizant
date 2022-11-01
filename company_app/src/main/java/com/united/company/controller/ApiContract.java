@@ -39,8 +39,8 @@ public interface ApiContract {
 			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
 			@ApiResponse(code = 415, message="The content is unsupported"),
 			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@GetMapping(path = "/info/{companycode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> getCompanyDetails(@PathVariable Long companyCode);
+	@GetMapping(path = "/info/{companyCode}")
+	public ResponseEntity<?> getCompanyDetails(@PathVariable String companyCode);
 	
 	@ApiOperation(value ="Fetches all the company details", hidden = false)
 	@ApiResponses(value = { @ApiResponse(code = 200, message="OK"),
@@ -50,7 +50,7 @@ public interface ApiContract {
 			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
 			@ApiResponse(code = 415, message="The content is unsupported"),
 			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@PutMapping(path = "/getall", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path = "/getall")
 	public ResponseEntity<?> getAllCompanyDetails();
 	
 	@ApiOperation(value ="Deletes a Company", hidden = false)
@@ -61,7 +61,18 @@ public interface ApiContract {
 			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
 			@ApiResponse(code = 415, message="The content is unsupported"),
 			@ApiResponse(code = 500, message="An unexpected error has occured")})
-	@DeleteMapping(path = "/delete/{companycode}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> deleteCompanyDetails(@PathVariable Long companyCode);
+	@DeleteMapping(path = "/delete/{companyCode}")
+	public ResponseEntity<?> deleteCompanyDetails(@PathVariable String companyCode);
+	
+	@ApiOperation(value ="update Company details", hidden = false)
+	@ApiResponses(value = { @ApiResponse(code = 200, message="OK"),
+			@ApiResponse(code = 400, message="Bad request"),
+			@ApiResponse(code = 401, message="Not authorized to view the resource"),
+			@ApiResponse(code = 403, message="Resource trying to access is forbidden"),
+			@ApiResponse(code = 404, message="The resource trying to reach is not found"),
+			@ApiResponse(code = 415, message="The content is unsupported"),
+			@ApiResponse(code = 500, message="An unexpected error has occured")})
+	@PutMapping(path = "/update", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<?> updateCompanyDetails(@RequestBody CompanyRegistry companyRegistryRequest);
 	
 }

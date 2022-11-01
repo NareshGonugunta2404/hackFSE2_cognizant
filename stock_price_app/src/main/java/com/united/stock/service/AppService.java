@@ -1,6 +1,7 @@
 package com.united.stock.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,11 +18,16 @@ public class AppService {
 	
 	@Autowired
 	AppRepo appRepo;
-
+	
+	@Autowired
+	UserNumService userNumService;
+	
 	public StockData saveStockPrice(String companyCode, double stockPrice) {
 		StockData stockData = new StockData();
 		stockData.setCompanyCode(companyCode);
 		stockData.setStockPrice(stockPrice);
+		stockData.setId(userNumService.getNext());
+		stockData.setCurrentDateTime(LocalDateTime.now());
 		return appRepo.save(stockData);
 	}
 
@@ -30,7 +36,8 @@ public class AppService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate startDateObj = LocalDate.parse(startDate, formatter);
 		LocalDate endDateObj = LocalDate.parse(endDate, formatter);
-		Collection<StockData> stockData = appRepo.findByCodeAndDate(companyCode, startDateObj, endDateObj);
+		Collection<StockData> stockData = appRepo.findByCompanyCodeAndCurrentDateTimeBetween(companyCode, startDateObj, endDateObj);
+		stockData = appRepo.findByCompanyCode(companyCode);
 		returnList.addAll(stockData);
 		return returnList;
 	}

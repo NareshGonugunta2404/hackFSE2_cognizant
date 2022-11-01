@@ -3,12 +3,11 @@ package com.united.stock.controller;
 import java.net.URI;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,9 +37,6 @@ public class AppController implements ApiContract{
 	
 	@Value("${restclient.companyregistry.url}")
 	String companyRegistryUrl;
-	
-	@Value("${restclient.stockprice.url}")
-	String stockPriceUrl;
 	
 	@GetMapping("/greetings")
 	public String greetings() {

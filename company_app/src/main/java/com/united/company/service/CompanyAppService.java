@@ -36,7 +36,7 @@ public class CompanyAppService {
 		return stockPriceEntity;
 	}
 
-	public Company getCompanyDetailByCompanyCode(Long companyCode) {
+	public Company getCompanyDetailByCompanyCode(String companyCode) {
 		return appRepository.findByCompanyCode(companyCode);
 	}
 
@@ -44,8 +44,17 @@ public class CompanyAppService {
 		return appRepository.findAll();		
 	}
 
-	public void deleteCompany(Long companyCode) {
+	public void deleteCompany(String companyCode) {
 		appRepository.deleteByCompanyCode(companyCode);
+	}
+
+	public Company updateCompanyDetailsByCompanyCode(CompanyRegistry companyRegistryRequest, Company companyExist) {
+		companyExist.setCompanyCEO(companyRegistryRequest.getCompanyCEO()!= null ? companyRegistryRequest.getCompanyCEO() : companyExist.getCompanyCEO());
+		companyExist.setCompanyName(companyRegistryRequest.getCompanyName()!= null ? companyRegistryRequest.getCompanyName() : companyExist.getCompanyName());
+		companyExist.setCompanyWebsite(companyRegistryRequest.getCompanyWebsite()!= null ? companyRegistryRequest.getCompanyWebsite() : companyExist.getCompanyWebsite());
+		companyExist.setStockExchange(companyRegistryRequest.getStockExchange()!= null ? companyRegistryRequest.getStockExchange() : companyExist.getStockExchange());
+		companyExist.setCompanyTurnover(companyRegistryRequest.getCompanyTurnover() > 0.0 ? companyRegistryRequest.getCompanyTurnover() : companyExist.getCompanyTurnover());
+		return appRepository.save(companyExist);
 	}
 	
 }
