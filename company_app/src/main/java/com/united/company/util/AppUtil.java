@@ -18,6 +18,7 @@ public class AppUtil {
 		company.setCompanyTurnover(companyDetails.getCompanyTurnover());
 		company.setCompanyWebsite(companyDetails.getCompanyWebsite());
 		company.setStockExchange(companyDetails.getStockExchange());
+		company.setStockPrice(Long.parseLong(companyDetails.getStockPrice()));
 		company.setId(UUID.randomUUID().toString());
 		return company;
 	}

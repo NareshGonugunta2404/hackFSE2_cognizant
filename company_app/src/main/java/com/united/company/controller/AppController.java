@@ -24,42 +24,43 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@Transactional
 @RestController
-public class AppController implements ApiContract{
-	
+public class AppController implements ApiContract {
+
 	@Autowired
 	private CompanyAppService appService;
-	
+
 	@Autowired
 	private CompanyRestClient companyclient;
-	
+
 	@Value("${restclient.stockprice.url}")
 	String stockPriceUrl;
 
 	@Override
 	public ResponseEntity<?> registerNewCompany(CompanyRegistry companyRegistryRequest) {
-		
-		if(companyRegistryRequest == null) {
+
+		if (companyRegistryRequest == null) {
 			log.info("Empty Company registry has not registered.{}", companyRegistryRequest.getCompanyCode());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(companyRegistryRequest.getCompanyTurnover()<10) {
+		if (companyRegistryRequest.getCompanyTurnover() < 10) {
 			throw new CompanyTurnoverException();
 		}
 		Company companyExist = appService.getCompanyDetailByCompanyCode(companyRegistryRequest.getCompanyCode());
-		if(null!=companyExist) {
+		if (null != companyExist) {
 			throw new CompanyCodeAlreadyExistException();
-			
+
 		}
 		Company registeredCompany = appService.registerCompany(companyRegistryRequest);
-		//return "company \""+ companyRegistryRequest.getCompanyName()+"\" got registered with id - "+companyId;
+		// return "company \""+ companyRegistryRequest.getCompanyName()+"\" got
+		// registered with id - "+companyId;
 		return new ResponseEntity<>(registeredCompany, HttpStatus.OK);
-		
+
 	}
 
 	@Override
 	public ResponseEntity<?> getCompanyDetails(String companyCode) {
 		Company company = appService.getCompanyDetailByCompanyCode(companyCode);
-	
+
 		return new ResponseEntity<>(company, HttpStatus.OK);
 	}
 
@@ -72,27 +73,28 @@ public class AppController implements ApiContract{
 	@Override
 	public ResponseEntity<?> deleteCompanyDetails(String companyCode) {
 		Company companyRegistry = appService.getCompanyDetailByCompanyCode(companyCode);
-		if(null == companyRegistry) {
+		if (null == companyRegistry) {
 			throw new CompanyNotFoundException();
 		}
-		URI determinedBasePathUri = URI.create(stockPriceUrl);
-		companyclient.deleteStockData(determinedBasePathUri,companyCode);
+		//URI determinedBasePathUri = URI.create(stockPriceUrl);
+		//companyclient.deleteStockData(determinedBasePathUri, companyCode);
 		appService.deleteCompany(companyCode);
-		log.info("Company deleted with company code \""+companyCode+"\".");
+		log.info("Company deleted with company code \"" + companyCode + "\".");
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@Override
-	public ResponseEntity<?> updateCompanyDetails(CompanyRegistry companyRegistryRequest) {
+	public ResponseEntity<?> updateCompanyDetails(String companyCOde, CompanyRegistry companyRegistryRequest) {
 		Company updatedCompany = null;
-		if(companyRegistryRequest == null) {
+		log.info("companyCOde : {}", companyCOde);
+		log.info("companyRegistryRequest : {}", companyRegistryRequest);
+		if (companyRegistryRequest == null) {
 			log.info("Empty Company update has not completed.{}", companyRegistryRequest.getCompanyCode());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		Company companyExist = appService.getCompanyDetailByCompanyCode(companyRegistryRequest.getCompanyCode());
-		if(null!=companyExist) {
-			updatedCompany = appService.updateCompanyDetailsByCompanyCode(companyRegistryRequest,companyExist);
-		}
+
+		updatedCompany = appService.updateCompanyDetailsByCompanyCode(companyCOde, companyRegistryRequest);
+		log.info("Company stocks updated successfully :: {}", updatedCompany);
 		return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
 	}
 

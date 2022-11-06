@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.united.company.entity.Company;
+import com.united.company.exception.CompanyNotFoundException;
 import com.united.company.repository.AppRepository;
 import com.united.company.resource.CompanyRegistry;
 import com.united.company.util.AppUtil;
@@ -48,13 +49,18 @@ public class CompanyAppService {
 		appRepository.deleteByCompanyCode(companyCode);
 	}
 
-	public Company updateCompanyDetailsByCompanyCode(CompanyRegistry companyRegistryRequest, Company companyExist) {
+	public Company updateCompanyDetailsByCompanyCode(String companyCode, CompanyRegistry companyRegistryRequest) {
+		Company companyExist = getCompanyDetailByCompanyCode(companyCode);
+		
 		companyExist.setCompanyCEO(companyRegistryRequest.getCompanyCEO()!= null ? companyRegistryRequest.getCompanyCEO() : companyExist.getCompanyCEO());
 		companyExist.setCompanyName(companyRegistryRequest.getCompanyName()!= null ? companyRegistryRequest.getCompanyName() : companyExist.getCompanyName());
 		companyExist.setCompanyWebsite(companyRegistryRequest.getCompanyWebsite()!= null ? companyRegistryRequest.getCompanyWebsite() : companyExist.getCompanyWebsite());
 		companyExist.setStockExchange(companyRegistryRequest.getStockExchange()!= null ? companyRegistryRequest.getStockExchange() : companyExist.getStockExchange());
 		companyExist.setCompanyTurnover(companyRegistryRequest.getCompanyTurnover() > 0.0 ? companyRegistryRequest.getCompanyTurnover() : companyExist.getCompanyTurnover());
-		return appRepository.save(companyExist);
+		companyExist.setStockPrice(Long.parseLong(companyRegistryRequest.getStockPrice()));
+		
+		Company company = appRepository.save(companyExist);
+		return company;
 	}
 	
 }

@@ -27,4 +27,6 @@ public class CompanyRegistry{
 	//@NotNull(message = "stockExchange is Mandatory")
 	private String stockExchange;
 	
+	private String stockPrice;
+	
 }

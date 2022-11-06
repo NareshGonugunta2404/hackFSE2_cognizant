@@ -29,5 +29,7 @@ public class Company {
 	private String companyWebsite;
 	
 	private String stockExchange;
+	
+	private long stockPrice;
 
 }
